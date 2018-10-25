@@ -9,6 +9,7 @@ A combination between people tracking and age and gender detection
 # Method
 - Firstly, faces are detected in the frame using the famous caffe model _res10_300x300_ssd_iter_140000.caffemodel_.
 - Secondly, age and gender of every person is predicted also using caffe models _age_net_ and _gender_net_.
+- Each person is then assigned an ID and tracked over time, even when they are out of the frame for not so long (5 seconds), whenever they come back in the frame, their ID will remain the same. 
 - A picture of the person is then saved with the information of him/her.
 
 # Requirements
