@@ -1,6 +1,7 @@
 # People-tracking-with-Age-and-Gender-detection
 A combination between people tracking and age and gender detection
 
+![alt text](https://github.com/habom2310/People-tracking-with-Age-and-Gender-detection/blob/master/result.PNG)
 # Abstract
 - Combining people tracking with age and gender detection is a good idea for many and many applications in real life scenarios such as caffe store management to gather the information of customers for further analysis, or in/out people control for security purposes in buildings ...
 - This is just a small step of putting all of the state-of-the-art image processing technology together.
