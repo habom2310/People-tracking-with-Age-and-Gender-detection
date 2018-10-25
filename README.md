@@ -22,7 +22,7 @@ A combination between people tracking and age and gender detection
 
 # Result
 - I can get 16fps in my Core i5 desktop with the solution of 640x480.
-- Basically, the exist age and gender models are fairly accurate, I've just turned 25 two days ago :).
+- Basically, the available age and gender models are fairly accurate, I've just turned 25 two days ago :).
 - If you want to train your own models for age and gender detection, have a look at https://github.com/dpressel/rude-carnie.
 
 # References
