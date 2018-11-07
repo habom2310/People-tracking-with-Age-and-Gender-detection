@@ -4,7 +4,7 @@ A combination between people tracking and age and gender detection
 ![alt text](https://github.com/habom2310/People-tracking-with-Age-and-Gender-detection/blob/master/result.PNG)
 # Abstract
 - Combining people tracking with age and gender detection is a good idea for many and many applications in real life scenarios such as caffe store management to gather the information of customers for further analysis, or in/out people control for security purposes in buildings ...
-- This is just a small step of putting all of the state-of-the-art image processing technology together.
+- This is just a small step of putting the state-of-the-art image processing techniques together.
 
 # Method
 - Firstly, faces are detected in the frame using the famous caffe model _res10_300x300_ssd_iter_140000.caffemodel_.
@@ -34,3 +34,6 @@ A great thank to those who have done fantastic work
 # Notes
 - Inform me in case you have any problem with running the code.
 - Any related idea is welcome at khanhhanguyen2310@gmail.com
+
+# UPDATE
+- Age and gender detection don't need to be performed every frame. Instead, we can detect every 5 or 10 frames to improve the speed of the program. 
