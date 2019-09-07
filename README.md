@@ -16,7 +16,6 @@ A combination between people tracking and age and gender detection
 - Python 3.5
 - cv2
 - imutils
-- Because the model files is bigger than 25MB so I can't put it here, you need to download it -->**[__here__](https://talhassner.github.io/home/publication/2015_CVPR)** <-- and place them in the folder age_gender_models.
 
 # Implementation
 - Run `python object_tracker.py` (sorry for the name, it should be people_tracker but I was too lazy to change it :))
