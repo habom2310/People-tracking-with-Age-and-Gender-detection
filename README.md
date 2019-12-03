@@ -13,17 +13,16 @@ A combination between people tracking and age and gender detection
 - A picture of the person is then saved with the information of him/her.
 
 # Requirements
-- Python 3.5
-- cv2
-- imutils
-- Because the model files is bigger than 25MB so I can't put it here, you need to download it -->**[__here__](https://talhassner.github.io/home/publication/2015_CVPR)** <-- and place them in the folder age_gender_models.
-
+```
+pip install requirements.txt
+```
 # Implementation
-- Run `python object_tracker.py` (sorry for the name, it should be people_tracker but I was too lazy to change it :))
+```
+python detect_and_tracker.py
+```
 
 # Result
 - I can get 16fps in my Core i5 desktop with the solution of 640x480.
-- Basically, the available age and gender models are fairly accurate, I've just turned 25 two days ago :).
 - If you want to train your own models for age and gender detection, have a look at https://github.com/dpressel/rude-carnie.
 
 # References
@@ -35,5 +34,5 @@ A great thank to those who have done fantastic work
 - Inform me in case you have any problem with running the code.
 - Any related idea is welcome at khanhhanguyen2310@gmail.com
 
-# UPDATE
-- Age and gender detection don't need to be performed every frame. Instead, we can detect every 5 or 10 frames to improve the speed of the program. 
+
+

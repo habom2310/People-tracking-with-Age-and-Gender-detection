@@ -3,12 +3,13 @@
 
 # import the necessary packages
 from pyimagesearch.centroidtracker import CentroidTracker
-from imutils.video import VideoStream
 import numpy as np
 import argparse
+from imutils import face_utils
 import imutils
 import time
 import cv2
+import dlib
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -16,7 +17,7 @@ ap.add_argument("-p", "--prototxt", default="deploy.prototxt",
 	help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", default="res10_300x300_ssd_iter_140000.caffemodel",
 	help="path to Caffe pre-trained model")
-ap.add_argument("-c", "--confidence", type=float, default=0.5,
+ap.add_argument("-c", "--confidence", type=float, default=0.8,
 	help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
@@ -46,51 +47,40 @@ cap =cv2.VideoCapture(0)
 
 
 # vs = VideoStream(src=0).start()
-time.sleep(2.0)
+time.sleep(1.0)
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 # loop over the frames from the video stream
 person = 0
+cnt = 0
 while True:
 	# read the next frame from the video stream and resize it
     ret,frame = cap.read()
     img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    #frame = imutils.resize(frame, width=400)
-    #print(frame.shape)
-	# if the frame dimensions are None, grab them
+
+    frame = imutils.resize(frame, width=400)
     if W is None or H is None:
         (H, W) = frame.shape[:2]
     
-	# construct a blob from the frame, pass it through the network,
-	# obtain our output predictions, and initialize the list of
-	# bounding box rectangles
-    blob = cv2.dnn.blobFromImage(frame, 1.0, (W, H),(104.0, 177.0, 123.0))
-    net.setInput(blob)
-    detections = net.forward()
-    rects = []
+    detector = dlib.get_frontal_face_detector()
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # detect faces in the grayscale image
+    rects = detector(gray, 0)
 
-	# loop over the detections
-    for i in range(0, detections.shape[2]):
-		# filter out weak detections by ensuring the predicted
-		# probability is greater than a minimum threshold
-        if detections[0, 0, i, 2] > args["confidence"]:
-			# compute the (x, y)-coordinates of the bounding box for
-			# the object, then update the bounding box rectangles list
-            box = detections[0, 0, i, 3:7] * np.array([W, H, W, H])
-            rects.append(box.astype("int"))
+    new_rects = []
 
-			# draw a bounding box surrounding the object so we can
-			# visualize it
-            (startX, startY, endX, endY) = box.astype("int")
-            
-            if(startX<0 or startY<0):
-                break
-            
-            face_img = frame[startY:endY, startX:endX].copy()
-            
-            blob2 = cv2.dnn.blobFromImage(face_img, 1, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
-            
-            
+    for rect in rects:
+        (x, y, w, h) = face_utils.rect_to_bb(rect)
+        if y<0:
+            print("a")
+            continue
+        new_rects.append((x, y, x + w, y + h))
+
+        face_img = frame[y:y+h, x:x+w].copy()
+
+        blob2 = cv2.dnn.blobFromImage(face_img, 1, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
+        
+        if cnt%10 == 0:
             # Predict gender
             gender_net.setInput(blob2)
             gender_preds = gender_net.forward()
@@ -99,17 +89,15 @@ while True:
             age_net.setInput(blob2)
             age_preds = age_net.forward()
             age = age_list[age_preds[0].argmax()]
-            
-            overlay_text = "%s, %s" % (gender, age)
-            cv2.putText(frame, overlay_text ,(startX,startY), font, 1,(255,0,0),2,cv2.LINE_AA)
-            
-            
-            cv2.rectangle(frame, (startX, startY), (endX, endY),(0, 255, 0), 2)
-            
+        
+        overlay_text = "%s, %s" % (gender, age)
+        cv2.putText(frame, overlay_text ,(x,y), font, 1,(255,0,0),2,cv2.LINE_AA)
+        cv2.rectangle(frame, (x, y), (x+w, y+h),(0, 255, 0), 2)
+
     save_frame = frame.copy()       
 	# update our centroid tracker using the computed set of bounding
 	# box rectangles
-    objects = ct.update(rects)
+    objects = ct.update(new_rects)
 
 	# loop over the tracked objects
     for (objectID, centroid) in objects.items():
@@ -124,6 +112,7 @@ while True:
 
 	# show the output frame
     cv2.imshow("Frame", frame)
+    cnt += 1
     key = cv2.waitKey(1) & 0xFF
 
 	# if the `q` key was pressed, break from the loop
