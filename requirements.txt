@@ -1,4 +1,4 @@
 imutils==0.5.2
-numpy==1.15.4
+numpy==1.21.0
 opencv-python==4.2.0.32
 dlib==19.17.0
