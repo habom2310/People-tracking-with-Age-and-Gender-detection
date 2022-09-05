@@ -53,6 +53,8 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 # loop over the frames from the video stream
 person = 0
 cnt = 0
+gender = "Undefined"
+age = "Undefined"
 while True:
 	# read the next frame from the video stream and resize it
     ret,frame = cap.read()
